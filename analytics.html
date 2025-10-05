@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real Estate Market Analytics</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="analytics.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Market Analytics Dashboard</h1>
+                    <p class="subtitle">Real-time market insights for investors</p>
+                </div>
+                <div class="header-controls">
+                    <button class="analytics-btn" onclick="window.location.href='index.html'">Calculator</button>
+                    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Market Selection -->
+            <div class="market-selector-card">
+                <h2>Select Market</h2>
+                <div class="market-controls">
+                    <select id="market-select" class="market-dropdown">
+                        <option value="">National Average</option>
+                        <option value="New York, NY">New York, NY</option>
+                        <option value="Los Angeles, CA">Los Angeles, CA</option>
+                        <option value="Chicago, IL">Chicago, IL</option>
+                        <option value="Houston, TX">Houston, TX</option>
+                        <option value="Phoenix, AZ">Phoenix, AZ</option>
+                        <option value="Philadelphia, PA">Philadelphia, PA</option>
+                        <option value="San Antonio, TX">San Antonio, TX</option>
+                        <option value="San Diego, CA">San Diego, CA</option>
+                        <option value="Dallas, TX">Dallas, TX</option>
+                        <option value="Austin, TX">Austin, TX</option>
+                    </select>
+                    <select id="comparison-select" class="market-dropdown">
+                        <option value="">Compare with...</option>
+                        <option value="New York, NY">New York, NY</option>
+                        <option value="Los Angeles, CA">Los Angeles, CA</option>
+                        <option value="Chicago, IL">Chicago, IL</option>
+                        <option value="Houston, TX">Houston, TX</option>
+                        <option value="Phoenix, AZ">Phoenix, AZ</option>
+                        <option value="Philadelphia, PA">Philadelphia, PA</option>
+                        <option value="San Antonio, TX">San Antonio, TX</option>
+                        <option value="San Diego, CA">San Diego, CA</option>
+                        <option value="Dallas, TX">Dallas, TX</option>
+                        <option value="Austin, TX">Austin, TX</option>
+                    </select>
+                    <button class="refresh-btn" onclick="analytics.refreshData()">Refresh Data</button>
+                </div>
+            </div>
+
+            <!-- Key Metrics Dashboard -->
+            <div class="metrics-dashboard">
+                <div class="metric-card large">
+                    <div class="metric-header">
+                        <h3>Median Home Price</h3>
+                        <span class="metric-change" id="price-change">+5.2%</span>
+                    </div>
+                    <div class="metric-value" id="median-price">$450,000</div>
+                    <div class="metric-subtitle">Updated today</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Mortgage Rate</h3>
+                        <span class="metric-change negative" id="rate-change">-0.15%</span>
+                    </div>
+                    <div class="metric-value" id="mortgage-rate">6.35%</div>
+                    <div class="metric-subtitle">30-year fixed</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Median Rent</h3>
+                        <span class="metric-change" id="rent-change">+3.8%</span>
+                    </div>
+                    <div class="metric-value" id="median-rent">$2,200</div>
+                    <div class="metric-subtitle">Per month</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Cap Rate</h3>
+                        <span class="metric-trend">Stable</span>
+                    </div>
+                    <div class="metric-value" id="cap-rate">7.5%</div>
+                    <div class="metric-subtitle">Market average</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Vacancy Rate</h3>
+                        <span class="metric-change" id="vacancy-change">-0.5%</span>
+                    </div>
+                    <div class="metric-value" id="vacancy-rate">5.2%</div>
+                    <div class="metric-subtitle">Annual average</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-header">
+                        <h3>Price/Rent Ratio</h3>
+                        <span class="metric-trend" id="ratio-trend">High</span>
+                    </div>
+                    <div class="metric-value" id="price-rent-ratio">17.0</div>
+                    <div class="metric-subtitle">Years to break even</div>
+                </div>
+            </div>
+
+            <!-- Charts Section -->
+            <div class="charts-section">
+                <div class="chart-card large">
+                    <h3>Historical Mortgage Rates</h3>
+                    <canvas id="rates-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Price vs Rent Growth</h3>
+                    <canvas id="growth-chart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Market Comparison</h3>
+                    <canvas id="comparison-chart"></canvas>
+                </div>
+                <div class="chart-card large">
+                    <h3>Investment Returns by Market</h3>
+                    <canvas id="returns-chart"></canvas>
+                </div>
+            </div>
+
+            <!-- Market Insights -->
+            <div class="insights-section">
+                <h2>Market Insights & Recommendations</h2>
+                <div class="insights-grid">
+                    <div class="insight-card">
+                        <div class="insight-icon buyer">B</div>
+                        <h4>For Buyers</h4>
+                        <ul id="buyer-insights">
+                            <li>Mortgage rates are trending down - good time to lock in</li>
+                            <li>Inventory is increasing, providing more options</li>
+                            <li>Consider negotiating seller concessions</li>
+                        </ul>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon investor">I</div>
+                        <h4>For Investors</h4>
+                        <ul id="investor-insights">
+                            <li>Cap rates above 7% indicate positive cash flow potential</li>
+                            <li>Look for properties with value-add opportunities</li>
+                            <li>Consider markets with high rent growth</li>
+                        </ul>
+                    </div>
+                    <div class="insight-card">
+                        <div class="insight-icon renter">R</div>
+                        <h4>For Renters</h4>
+                        <ul id="renter-insights">
+                            <li>Rent growth is slowing in most markets</li>
+                            <li>More negotiation power with increased vacancy</li>
+                            <li>Consider locking in longer lease terms</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Markets Table -->
+            <div class="markets-table-section">
+                <h2>Top Investment Markets</h2>
+                <div class="table-controls">
+                    <button class="table-btn active" data-sort="capRate">Cap Rate</button>
+                    <button class="table-btn" data-sort="appreciation">Appreciation</button>
+                    <button class="table-btn" data-sort="rentGrowth">Rent Growth</button>
+                    <button class="table-btn" data-sort="affordability">Affordability</button>
+                </div>
+                <table id="markets-table">
+                    <thead>
+                        <tr>
+                            <th>Market</th>
+                            <th>Median Price</th>
+                            <th>Median Rent</th>
+                            <th>Cap Rate</th>
+                            <th>Appreciation</th>
+                            <th>Rent Growth</th>
+                            <th>Vacancy</th>
+                            <th>Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="markets-tbody">
+                        <!-- Populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Calculator Integration -->
+            <div class="calculator-integration">
+                <h2>Quick Analysis</h2>
+                <p>Use these market insights in the calculator for accurate projections</p>
+                <div class="integration-actions">
+                    <button class="action-btn primary" onclick="analytics.exportToCalculator()">
+                        Use Current Market Data in Calculator
+                    </button>
+                    <button class="action-btn" onclick="analytics.downloadReport()">
+                        Download Market Report
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="marketData.js"></script>
+    <script src="analytics.js"></script>
+</body>
+</html>

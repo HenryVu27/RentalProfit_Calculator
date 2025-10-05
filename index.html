@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Property Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <div class="header-left">
+                    <h1>Property Investment Calculator</h1>
+                    <p class="subtitle">Real estate ROI analysis</p>
+                </div>
+                <div class="header-controls">
+                    <div class="mode-toggle">
+                        <button class="mode-btn active" data-mode="simple">Simple</button>
+                        <button class="mode-btn" data-mode="advanced">Advanced</button>
+                    </div>
+                    <button class="analytics-btn" onclick="window.location.href='analytics.html'">Market Analytics</button>
+                    <button class="theme-toggle" id="theme-toggle" title="Toggle dark mode">
+                        <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <line x1="12" y1="1" x2="12" y2="3"></line>
+                            <line x1="12" y1="21" x2="12" y2="23"></line>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                            <line x1="1" y1="12" x2="3" y2="12"></line>
+                            <line x1="21" y1="12" x2="23" y2="12"></line>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                        </svg>
+                        <svg class="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <!-- Simple Mode -->
+            <div id="simple-mode" class="input-section active">
+                <h2>Quick Analysis</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label>Purchase Price</label>
+                        <input type="text" id="simple-purchase-price" placeholder="$400,000">
+                    </div>
+                    <div class="input-group">
+                        <label>Down Payment (%)</label>
+                        <input type="number" id="simple-down-payment" placeholder="20" min="0" max="100">
+                    </div>
+                    <div class="input-group">
+                        <label>Interest Rate (%)</label>
+                        <input type="number" id="simple-interest-rate" placeholder="6.5" step="0.1">
+                    </div>
+                    <div class="input-group">
+                        <label>Loan Term (Years)</label>
+                        <input type="number" id="simple-loan-term" placeholder="30">
+                    </div>
+                    <div class="input-group">
+                        <label>Monthly Rent</label>
+                        <input type="text" id="simple-monthly-rent" placeholder="$3,000">
+                    </div>
+                    <div class="input-group">
+                        <label>Annual Expenses (%)</label>
+                        <input type="number" id="simple-annual-expenses" placeholder="35" min="0" max="100">
+                        <small>% of rental income for taxes, insurance, maintenance</small>
+                    </div>
+                </div>
+                <button class="calculate-btn" onclick="calculateSimple()">Calculate</button>
+            </div>
+
+            <!-- Advanced Mode -->
+            <div id="advanced-mode" class="input-section">
+                <h2>Detailed Analysis</h2>
+
+                <div class="section-card">
+                    <h3>Purchase & Initial Costs</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Purchase Price</label>
+                            <input type="text" id="adv-purchase-price" placeholder="$400,000">
+                        </div>
+                        <div class="input-group">
+                            <label>Down Payment</label>
+                            <div class="input-flex">
+                                <input type="text" id="adv-down-payment-amount" placeholder="$80,000">
+                                <span>or</span>
+                                <input type="number" id="adv-down-payment-percent" placeholder="20" min="0" max="100">
+                                <span>%</span>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Closing Costs</label>
+                            <input type="number" id="adv-closing-costs" placeholder="3" min="0" max="10">
+                            <small>% of purchase price</small>
+                        </div>
+                        <div class="input-group">
+                            <label>Initial Repairs</label>
+                            <input type="text" id="adv-initial-repairs" placeholder="$10,000">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>Loan Details</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Interest Rate (%)</label>
+                            <input type="number" id="adv-interest-rate" placeholder="6.5" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Loan Term (Years)</label>
+                            <select id="adv-loan-term">
+                                <option value="15">15 Years</option>
+                                <option value="30" selected>30 Years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>Monthly Income & Expenses</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Monthly Rental Income</label>
+                            <input type="text" id="adv-monthly-rent" placeholder="$3,000">
+                        </div>
+                        <div class="input-group">
+                            <label>Vacancy Rate (%)</label>
+                            <input type="number" id="adv-vacancy-rate" placeholder="5" min="0" max="100">
+                        </div>
+                        <div class="input-group">
+                            <label>Property Tax (Annual)</label>
+                            <input type="text" id="adv-property-tax" placeholder="$4,800">
+                        </div>
+                        <div class="input-group">
+                            <label>Insurance (Annual)</label>
+                            <input type="text" id="adv-insurance" placeholder="$1,800">
+                        </div>
+                        <div class="input-group">
+                            <label>Property Management (%)</label>
+                            <input type="number" id="adv-management-fee" placeholder="8" min="0" max="20">
+                            <small>% of monthly rent</small>
+                        </div>
+                        <div class="input-group">
+                            <label>Maintenance Budget</label>
+                            <input type="number" id="adv-maintenance" placeholder="1" min="0" max="5">
+                            <small>% of property value annually</small>
+                        </div>
+                        <div class="input-group">
+                            <label>HOA Fees (Monthly)</label>
+                            <input type="text" id="adv-hoa" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3>Projection & Sale</h3>
+                    <div class="input-grid">
+                        <div class="input-group">
+                            <label>Holding Period (Years)</label>
+                            <input type="number" id="adv-holding-period" placeholder="10" min="1" max="30">
+                        </div>
+                        <div class="input-group">
+                            <label>Annual Appreciation (%)</label>
+                            <input type="number" id="adv-appreciation" placeholder="3" step="0.1">
+                        </div>
+                        <div class="input-group">
+                            <label>Selling Costs (%)</label>
+                            <input type="number" id="adv-selling-costs" placeholder="7" min="0" max="15">
+                            <small>% of sale price</small>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="calculate-btn" onclick="calculateAdvanced()">Calculate</button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="results" class="results-section" style="display: none;">
+                <h2>Analysis Results</h2>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <h3>Monthly Cash Flow</h3>
+                        <div class="metric-value" id="monthly-cashflow">$0</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Cash-on-Cash Return</h3>
+                        <div class="metric-value" id="cash-on-cash">0%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Cap Rate</h3>
+                        <div class="metric-value" id="cap-rate">0%</div>
+                    </div>
+                    <div class="metric-card">
+                        <h3>Total ROI (at sale)</h3>
+                        <div class="metric-value" id="total-roi">0%</div>
+                    </div>
+                </div>
+
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <h3>Cumulative Profit by Year</h3>
+                        <canvas id="profit-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Equity vs Debt Over Time</h3>
+                        <canvas id="equity-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Cash Flow Breakdown</h3>
+                        <canvas id="cashflow-chart"></canvas>
+                    </div>
+                    <div class="chart-card">
+                        <h3>Return on Investment Timeline</h3>
+                        <canvas id="roi-chart"></canvas>
+                    </div>
+                </div>
+
+                <div class="breakdown-section">
+                    <h3>Detailed Breakdown</h3>
+                    <div id="breakdown-table"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="marketData.js"></script>
+    <script src="smartSuggestions.js"></script>
+    <script src="calculator.js"></script>
+</body>
+</html>

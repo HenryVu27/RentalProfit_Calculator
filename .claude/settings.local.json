@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(start index.html)",
+      "Read(//c/Users/user/Pictures/Screenshots/**)",
+      "WebSearch",
+      "Bash(dir:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
